@@ -43,7 +43,7 @@ from .client import APIClient
 
 __title__ = "DiscordStatusPy"
 __author__ = "Booplicate"
-__version__ = "0.0.1"
+__version__ = "0.0.2"
 
 
 async def get_summary(**kwargs):
