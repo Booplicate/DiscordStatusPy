@@ -157,8 +157,10 @@ class APIClient():
                 return await resp.json()
 
         except ClientError:
-            if self.silence_exc:
-                return None
+            if not self.silence_exc:
+                raise
+
+            return None
 
     @classmethod
     def check_sessions(cls) -> None:
