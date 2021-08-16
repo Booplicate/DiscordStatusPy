@@ -14,7 +14,11 @@ from typing import (
 )
 
 
-from aiohttp import ClientSession, ClientError
+from aiohttp import (
+    ClientSession,
+    ClientResponse,
+    ClientError
+)
 
 
 from .urls import *
@@ -29,16 +33,17 @@ class APIClient():
     """
     session_map: ClassVar[dict[str, ClientSession]] = dict()
 
-    def __init__(self, silence_exc: bool = False, **kwargs) -> None:
+    def __init__(self, suppress_exc: bool = True, check_content_type: bool = False, **kwargs) -> None:
         """
         Constructor
 
         IN:
-            silence_exc - whether or not silence client exceptions
+            suppress_exc - whether or not silence client exceptions
             kwargs - additional kwargs to pass into the session object
                 constructor
         """
-        self.silence_exc = silence_exc
+        self.suppress_exc = suppress_exc
+        self.check_content_type = check_content_type
 
         sesh = ClientSession(**kwargs)
         self.session_map[id(self)] = sesh
@@ -162,10 +167,15 @@ class APIClient():
         """
         try:
             async with self.session.get(page_url) as resp:
-                return await resp.json()
+                resp: ClientResponse
+                kwargs = dict()
+                if not self.check_content_type:
+                    kwargs["content_type"] = None
+
+                return await resp.json(**kwargs)
 
         except ClientError:
-            if not self.silence_exc:
+            if not self.suppress_exc:
                 raise
 
             return None

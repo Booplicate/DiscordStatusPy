@@ -67,14 +67,14 @@ class TestClient(unittest.IsolatedAsyncioTestCase, _Mixin):
 
     async def test_exc_raising(self) -> None:
         with patch.object(self.client.session, "get", side_effect=ClientError) as mock:
-            self.client.silence_exc = True
+            self.client.suppress_exc = True
 
             try:
                 await self.client.get_summary()
             except ClientError:
                 self.fail("ClientError wasn't silenced.")
 
-            self.client.silence_exc = False
+            self.client.suppress_exc = False
 
             with self.assertRaises(ClientError, msg="ClientError wasn't raised."):
                 await self.client.get_summary()
@@ -82,7 +82,7 @@ class TestClient(unittest.IsolatedAsyncioTestCase, _Mixin):
         class TestException(Exception): pass
 
         with patch.object(self.client.session, "get", side_effect=TestException) as mock:
-            self.client.silence_exc = True
+            self.client.suppress_exc = True
 
             with self.assertRaises(TestException, msg="TestException wasn't raised."):
                 await self.client.get_summary()

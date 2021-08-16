@@ -13,7 +13,8 @@ import asyncio
 import DiscordStatusPy
 
 async def main():
-    maintenances = await DiscordStatusPy.get_maintenances()
+    # With suppress_exc we will suppress all raised exceptions and return None
+    maintenances = await DiscordStatusPy.get_maintenances(suppress_exc=True)
     print(maintenances['scheduled_maintenances'])
 
 asyncio.run(main())
@@ -42,7 +43,8 @@ import asyncio
 from DiscordStatusPy import APIClient
 
 async def main():
-    async with APIClient() as client:
+    # With check_content_type we will check response’s content type
+    async with APIClient(check_content_type=True) as client:
         status = await client.get_status()
         incidents = await client.get_incidents()
         print(status['status']['description'])
