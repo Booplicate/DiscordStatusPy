@@ -44,6 +44,13 @@ class APIClient():
         self.session_map[id(self)] = sesh
         self.session = sesh
 
+    @property
+    def closed(self) -> bool:
+        """
+        Read-only property to check whether or not this client was closed
+        """
+        return self.session.closed
+
     async def get_summary(self):
         """
         Get a summary of the status page, including a status indicator, component statuses,
@@ -124,12 +131,13 @@ class APIClient():
         Method to close client connection.
         Must be ALWAYS called on program exit
         """
-        await self.session.close()
-        try:
-            del self.session_map[id(self)]
+        if not self.closed:
+            await self.session.close()
+            try:
+                del self.session_map[id(self)]
 
-        except KeyError:
-            pass
+            except KeyError:
+                pass
 
     async def __aenter__(self) -> APIClient:
         return self
