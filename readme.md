@@ -1,5 +1,10 @@
 # DiscordStatusPy - async API wrapper around [discordstatus](https://discordstatus.com)
 
+[![CI](https://github.com/Booplicate/DiscordStatusPy/actions/workflows/tests.yml/badge.svg?branch=master)](https://github.com/Booplicate/DiscordStatusPy/actions/workflows/tests.yml)
+
+### Install:
+**`pip install DiscordStatusPy`**
+
 ### Requirements:
 Tested with the stack below. May or may not work on other versions.
  - `Python 3.9.6`
