@@ -10,6 +10,7 @@ from types import TracebackType
 from typing import (
     ClassVar,
     Optional,
+    Union,
     Type
 )
 
@@ -24,7 +25,7 @@ from aiohttp import (
 from .urls import *
 
 
-JSONResponce = Optional[dict[str, "JSONResponce"]]
+JSONResponce = Optional[dict[str, Union[bool, int, str, list["JSONResponce"], "JSONResponce"]]]
 
 
 class APIClient():
